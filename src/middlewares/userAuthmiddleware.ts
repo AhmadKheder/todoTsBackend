@@ -8,8 +8,11 @@ export const UserAuthrization = async (req: Request, res: Response, next: any) =
         //     user: userPayload.email,
         //     msg: "Access Succeed!"
         // })
-        next();
 
+
+
+        
+        next();
     } catch (error) {
         res.status(400).json({
             errors: [

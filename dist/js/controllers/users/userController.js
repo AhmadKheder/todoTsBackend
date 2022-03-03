@@ -32,9 +32,15 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const body = req.body;
         const email = body.email;
         const users = yield user_1.default.find({ email });
+        const tokenX = req.header('user-auth-token');
+        console.log({ tokenX });
+        if (!users.length) {
+            yield res.status(404).send({ status: 'faild' });
+            return;
+        }
         const token = users[0].token;
-        const ismatch = yield bcrypt.compare(body.password, users[0].password);
-        if (users.length && ismatch) {
+        const isMatch = yield bcrypt.compare(body.password, users[0].password);
+        if (users.length && isMatch) {
             res.status(200).send({
                 status: 'success',
                 "token": users[0].token
@@ -49,13 +55,13 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
-const fieldsVadlidating = [
+const fieldsValidation = [
     (0, express_validator_1.check)("email", "invalid email").isEmail(),
     (0, express_validator_1.check)("password", "invalid password").isLength({
         min: 8
     })
 ];
-exports.fieldsVadlidating = fieldsVadlidating;
+exports.fieldsVadlidating = fieldsValidation;
 const resigter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log("=========> Called");
@@ -75,8 +81,7 @@ const resigter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             password,
             token,
         });
-        const newTodo = yield user.save();
-        // console.log({ newTodo: newTodo.toObject() })
+        yield user.save();
         res.status(201).json({
             message: "User added",
             token
@@ -89,13 +94,8 @@ const resigter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.resigter = resigter;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const deletedUser = yield user_1.default.findByIdAndRemove(req.params.id);
-        const allusers = yield user_1.default.find();
-        res.status(200).json({
-            message: "User deleted",
-            user: deletedUser,
-            users: allusers,
-        });
+        yield user_1.default.deleteOne({ _id: req.params.id });
+        res.status(200).json({ message: "User deleted", });
     }
     catch (error) {
         throw error;
