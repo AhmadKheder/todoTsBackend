@@ -32,6 +32,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const body = req.body;
         const email = body.email;
         const users = yield user_1.default.find({ email });
+        const token = users[0].token;
         const ismatch = yield bcrypt.compare(body.password, users[0].password);
         if (users.length && ismatch) {
             res.status(200).send({
@@ -57,6 +58,7 @@ const fieldsVadlidating = [
 exports.fieldsVadlidating = fieldsVadlidating;
 const resigter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("=========> Called");
         const errors = (0, express_validator_1.validationResult)(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -64,6 +66,7 @@ const resigter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         const body = req.body;
+        console.log({ body });
         const email = body.email;
         const password = yield bcrypt.hash(body.password, 10);
         const token = yield JWT.sign({ email }, process.env.SECRET_KEY, { expiresIn: 900000 });

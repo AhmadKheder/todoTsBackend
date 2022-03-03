@@ -1,8 +1,10 @@
-import { Router } from "express"
-import { addTodo, deleteTodo, getTodos, updateTodo } from "../controllers/todos"
+import { Router } from "express";
+import { addTodo, deleteTodo, getTodos, updateTodo } from "../controllers/todos";
+import UserAuthrization from '../middlewares/userAuthmiddleware';
+
 const router: Router = Router()
 
-router.get("/todos", getTodos)
+router.get("/todos", UserAuthrization, getTodos)
 
 router.post("/add-todo", addTodo)
 

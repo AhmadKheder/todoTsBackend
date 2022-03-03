@@ -15,9 +15,11 @@ const getUsers = async (req: Request, res: Response): Promise<void> => {
 }
 const login = async (req: Request, res: Response): Promise<void> => {
     try {
-        const body = req.body as Pick<IUser, "email" | "password">
+        const body = req.body as Pick<IUser, "email" | "password" | "token">
         const email = body.email;
         const users: IUser[] = await User.find({ email })
+        const token = users[0].token;
+
         const ismatch = await bcrypt.compare(body.password, users[0].password);
 
         if (users.length && ismatch) {
@@ -44,6 +46,10 @@ const fieldsVadlidating =
 
 const resigter = async (req: Request, res: Response): Promise<void | any> => {
     try {
+
+        console.log("=========> Called")
+
+
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -51,6 +57,10 @@ const resigter = async (req: Request, res: Response): Promise<void | any> => {
             })
         }
         const body = req.body as Pick<IUser, "email" | "password">
+
+        console.log({ body })
+
+
         const email = body.email;
         const password = await bcrypt.hash(body.password, 10)
 

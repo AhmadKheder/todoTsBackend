@@ -13,7 +13,7 @@ const routes_1 = __importDefault(require("./routes"));
 const auth = require('./routes/auth');
 dotenv_1.default.config();
 exports.app = (0, express_1.default)();
-exports.app.use((0, cors_1.default)({ origin: "*", }));
+exports.app.use((0, cors_1.default)({ origin: true, }));
 const PORT = process.env.PORT || 4000;
 exports.app.use(body_parser_1.default.json());
 exports.app.use(routes_1.default);

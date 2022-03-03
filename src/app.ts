@@ -7,7 +7,7 @@ import todoRoutes from "./routes"
 const auth = require('./routes/auth')
 dotenv.config()
 export const app: Express = express()
-app.use(cors({ origin: "*", }))
+app.use(cors({ origin: true, }))
 
 
 const PORT: string | number = process.env.PORT || 4000
