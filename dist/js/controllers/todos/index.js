@@ -14,9 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTodo = exports.updateTodo = exports.addTodo = exports.getTodos = void 0;
 const todo_1 = __importDefault(require("../../models/todo"));
+const user_1 = __importDefault(require("../../models/user"));
 const getTodos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const todos = yield todo_1.default.find({});
+        const users = yield user_1.default.findOne({ "token": `${req.headers["user-auth-token"]}` });
+        const todos = yield todo_1.default.find({ "userId": `${users._id}` });
         res.status(200).json({ todos });
     }
     catch (error) {
@@ -27,14 +29,15 @@ exports.getTodos = getTodos;
 const addTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req.body;
+        const users = yield user_1.default.findOne({ "token": `${req.headers["user-auth-token"]}` });
         const todo = new todo_1.default({
+            userId: users._id,
             title: body.title,
             date: body.date,
             description: body.description,
             status: body.status,
         });
         const newTodo = yield todo.save();
-        // console.log({ newTodo: newTodo.toObject() })
         res.status(201).json({
             message: "Todo added",
         });

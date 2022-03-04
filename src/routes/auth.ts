@@ -3,7 +3,6 @@ import { deleteUser, fieldsVadlidating, getUsers, login, resigter } from '../con
 import UserAuthrization from '../middlewares/userAuthmiddleware';
 
 router.get("/users", UserAuthrization, getUsers)
-//  fieldsVadlidating,
 router.post("/register", fieldsVadlidating, resigter)
 router.post("/login", login)
 

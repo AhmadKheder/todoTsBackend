@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 const JWT = require('jsonwebtoken')
-export const UserAuthrization = async (req: Request, res: Response, next: any) => {
+const UserAuthrization = async (req: Request, res: Response, next: any) => {
     const token = req.header('user-auth-token');
+    console.log("VVVVVVVVVVVVV")
+    console.log(token)
     try {
         let userPayload = await JWT.verify(token, process.env.SECRET_KEY)
         // res.status(200).json({
@@ -11,7 +13,7 @@ export const UserAuthrization = async (req: Request, res: Response, next: any) =
 
 
 
-        
+
         next();
     } catch (error) {
         res.status(400).json({
@@ -23,4 +25,4 @@ export const UserAuthrization = async (req: Request, res: Response, next: any) =
         })
     }
 }
-module.exports = UserAuthrization;
+export default UserAuthrization;

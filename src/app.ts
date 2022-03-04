@@ -16,7 +16,6 @@ app.use(bodyParser.json())
 
 app.use(todoRoutes)
 app.use('/auth', auth)
-let db = process.env.MONGO_DB;
 
 const uri: string = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.f6d5v.mongodb.net/${process.env.MONGO_DB}`
 
@@ -28,6 +27,7 @@ mongoose
         )
     )
     .catch(error => {
+        console.log("======>", error)
         throw error;
 
     })

@@ -9,10 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserAuthrization = void 0;
 const JWT = require('jsonwebtoken');
 const UserAuthrization = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.header('user-auth-token');
+    console.log("VVVVVVVVVVVVV");
+    console.log(token);
     try {
         let userPayload = yield JWT.verify(token, process.env.SECRET_KEY);
         // res.status(200).json({
@@ -31,5 +32,4 @@ const UserAuthrization = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         });
     }
 });
-exports.UserAuthrization = UserAuthrization;
-module.exports = exports.UserAuthrization;
+exports.default = UserAuthrization;

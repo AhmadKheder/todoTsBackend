@@ -20,8 +20,6 @@ const login = async (req: Request, res: Response): Promise<void> => {
         const email = body.email;
         const users: IUser[] = await User.find({ email })
         const tokenX = req.header('user-auth-token');
-        console.log({ tokenX })
-
 
 
 
@@ -63,24 +61,13 @@ const fieldsValidation =
 
 const resigter = async (req: Request, res: Response): Promise<void | any> => {
     try {
-
-        console.log("=========> Called")
-
-
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({
                 errors: errors.array()
             })
         }
-
-
-
         const body = req.body as Pick<IUser, "email" | "password">
-
-        console.log({ body })
-
-
         const email = body.email;
         const password = await bcrypt.hash(body.password, 10)
 
@@ -89,15 +76,11 @@ const resigter = async (req: Request, res: Response): Promise<void | any> => {
             process.env.SECRET_KEY,
             { expiresIn: 900000 }
         )
-
-
         const user: IUser = new User({
             email,
             password,
             token,
         })
-
-
         await user.save();
 
         res.status(201).json(

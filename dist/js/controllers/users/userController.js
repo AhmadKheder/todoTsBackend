@@ -33,7 +33,6 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const email = body.email;
         const users = yield user_1.default.find({ email });
         const tokenX = req.header('user-auth-token');
-        console.log({ tokenX });
         if (!users.length) {
             yield res.status(404).send({ status: 'faild' });
             return;
@@ -64,7 +63,6 @@ const fieldsValidation = [
 exports.fieldsVadlidating = fieldsValidation;
 const resigter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("=========> Called");
         const errors = (0, express_validator_1.validationResult)(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -72,7 +70,6 @@ const resigter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         const body = req.body;
-        console.log({ body });
         const email = body.email;
         const password = yield bcrypt.hash(body.password, 10);
         const token = yield JWT.sign({ email }, process.env.SECRET_KEY, { expiresIn: 900000 });
